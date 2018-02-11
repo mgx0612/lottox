@@ -1,13 +1,5 @@
-use common::{list_to_set,Sum};
-
-pub fn check_nums(n: u8) -> bool {
-    n <= 10
-}
-
-pub fn check_list(list: &[u8]) -> bool {
-    let len = list.len();
-     len >0 && len== list_to_set(list).len() && list.iter().all(|&n| check_nums(n))
-}
+use common::Sum;
+use super::check_list;
 
 pub struct Lotto5Star5Multi {
     lists: Vec<Vec<u8>>,
