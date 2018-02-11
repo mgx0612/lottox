@@ -1,0 +1,6 @@
+[package]
+name = "lottox"
+version = "0.1.0"
+authors = ["mgx <marcusgx0612@gmail.com>"]
+
+[dependencies]
