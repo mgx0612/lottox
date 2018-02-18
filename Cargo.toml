@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["mgx <marcusgx0612@gmail.com>"]
 
 [dependencies]
+gotham = "0.1.2"

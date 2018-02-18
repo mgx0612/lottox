@@ -1,4 +1,4 @@
-use common::list_to_set;
+use common::check::list_to_set;
 
 pub mod star5_multi;
 
