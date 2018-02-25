@@ -12,9 +12,9 @@ fn is_bit_in(bit:i32, bits:i32)-> bool {
     (bit & bits) == bit
 }
 
-pub fn is_allbit_in(bitv:Vec<i32>, bitsv:Vec<i32>)-> bool {
+pub fn is_allbit_in(bitv:&[i32], bitsv:&[i32])-> bool {
     if bitv.len() == bitsv.len(){
-        return bitv.iter().zip(bitsv).all(|(&bit,bits)| is_bit_in(bit, bits));
+        return bitv.iter().zip(bitsv.iter()).all(|(&bit,&bits)| is_bit_in(bit, bits));
     }
     false
 }
@@ -33,13 +33,13 @@ mod tests {
     fn test_all_bit_in_0to9(){
         let v1 = vec![u8_to_bits(2), u8_to_bits(7), u8_to_bits(0)];
         let v2 = vec![u8array_to_bits(&vec![1,2,3]), u8array_to_bits(&vec![7,8,9]), u8array_to_bits(&vec![0,4,5])];
-        assert!(is_allbit_in(v1, v2))
+        assert!(is_allbit_in(&v1, &v2))
     }
 
     #[test]
     fn test_all_bit_in_1to11(){
         let v1 = vec![u8_to_bits(1), u8_to_bits(11)];
         let v2 = vec![u8array_to_bits(&vec![1,2,3]), u8array_to_bits(&vec![7,8,9,10,11])];
-        assert!(is_allbit_in(v1, v2))
+        assert!(is_allbit_in(&v1, &v2))
     }
 }
