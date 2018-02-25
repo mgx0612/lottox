@@ -30,10 +30,16 @@ mod tests {
     }
 
     #[test]
-    fn test_all_bit_in(){
-        let v1 = vec![u8_to_bits(2), u8_to_bits(7)];
-        let v2 = vec![u8array_to_bits(&vec![1,2,3]), u8array_to_bits(&vec![7,8,9])];
+    fn test_all_bit_in_0to9(){
+        let v1 = vec![u8_to_bits(2), u8_to_bits(7), u8_to_bits(0)];
+        let v2 = vec![u8array_to_bits(&vec![1,2,3]), u8array_to_bits(&vec![7,8,9]), u8array_to_bits(&vec![0,4,5])];
         assert!(is_allbit_in(v1, v2))
     }
 
+    #[test]
+    fn test_all_bit_in_1to11(){
+        let v1 = vec![u8_to_bits(1), u8_to_bits(11)];
+        let v2 = vec![u8array_to_bits(&vec![1,2,3]), u8array_to_bits(&vec![7,8,9,10,11])];
+        assert!(is_allbit_in(v1, v2))
+    }
 }
