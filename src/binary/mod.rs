@@ -1,5 +1,5 @@
 #[inline]
-fn u8_to_bits(v: u8) -> i32 {
+pub fn u8_to_bits(v: u8) -> i32 {
     1 << v
 }
 
@@ -14,11 +14,21 @@ fn is_bit_in(bit: i32, bits: i32) -> bool {
 }
 
 #[inline]
-pub fn is_allbit_in<'a, T>(bitv: T, bitsv: T) -> bool
+pub fn is_allbit_in<A, B>(bitv: A, bitsv: B) -> bool
 where
-    T: Iterator<Item = &'a i32>,
+    A: Iterator<Item = i32>,
+    B: Iterator<Item = i32>,
 {
-    bitv.zip(bitsv).all(|(&bit, &bits)| is_bit_in(bit, bits))
+    match_allbit(bitv, bitsv).all(|x| x)
+}
+
+#[inline]
+pub fn match_allbit<A, B>(bitv: A, bitsv: B) -> impl Iterator<Item=bool>
+where
+    A: Iterator<Item = i32>,
+    B: Iterator<Item = i32>,
+{
+    bitv.zip(bitsv).map(|(bit, bits)| is_bit_in(bit, bits))
 }
 
 #[cfg(test)]
@@ -39,16 +49,16 @@ mod tests {
             u8array_to_bits(&vec![7, 8, 9]),
             u8array_to_bits(&vec![0, 4, 5]),
         ];
-        assert!(is_allbit_in(v1.iter(), v2.iter()))
+        assert!(is_allbit_in(v1.into_iter(), v2.into_iter()))
     }
 
     #[test]
     fn test_all_bit_in_1to11() {
-        let v1 = vec![u8_to_bits(1), u8_to_bits(11)];
+        let v1 = vec![1, 11];
         let v2 = vec![
-            u8array_to_bits(&vec![1, 2, 3]),
-            u8array_to_bits(&vec![7, 8, 9, 10, 11]),
+            vec![1, 2, 3],
+            vec![7, 8, 9, 10, 11],
         ];
-        assert!(is_allbit_in(v1.iter(), v2.iter()));
+        assert!(is_allbit_in(v1.iter().map(|&r| u8_to_bits(r)), v2.iter().map(|l| u8array_to_bits(l))));
     }
 }
