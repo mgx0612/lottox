@@ -3,10 +3,15 @@ use common::check::list_to_set;
 pub mod prize;
 pub mod star5_multi;
 pub mod star5_straight_combo;
+pub mod star5_group_120;
 
 pub fn check_list(list: &[u8]) -> bool {
+    check_list_min_max(list, 1, 10)
+}
+
+pub fn check_list_min_max(list: &[u8], min: usize, max: usize) -> bool {
     let len = list.len();
-    len > 0 && len == list_to_set(list).len() && list.iter().all(|&n| n < 10)
+    len >= min && len <= max && len == list_to_set(list).len() && list.iter().all(|&n| n < 10)
 }
 
 #[cfg(test)]
