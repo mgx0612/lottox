@@ -1,6 +1,8 @@
 use common::check::list_to_set;
 
+pub mod prize;
 pub mod star5_multi;
+pub mod star5_straight_combo;
 
 pub fn check_list(list: &[u8]) -> bool {
     let len = list.len();

@@ -2,14 +2,8 @@ use common::sum::{Sum, sum1};
 use common::bingo::{Bingo, Prize};
 use super::check_list;
 use binary::{is_allbit_in, u8_to_bits, u8array_to_bits};
+use super::prize::PrizeStar5;
 
-pub struct PrizeStar5;
-
-impl Prize for PrizeStar5 {
-    fn value(&self) -> f64 {
-        100000.0
-    }
-}
 
 pub struct Lotto5Star5Multi {
     lists: Vec<Vec<u8>>,
