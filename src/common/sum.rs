@@ -10,19 +10,16 @@ pub fn sum1<T>(ls: &Vec<Vec<T>>) -> usize {
 
 pub fn combos(total: usize, n: usize) -> usize {
     assert!(total >= n);
-    let r = min(n, total - n);
-    a(total, r) / c(r)
-}
-
-fn c(n: usize) -> usize {
-    if n != 0 {
-        let mut x = 1;
-        for i in 1..(n + 1) {
-            x = x * i
+    if n == 0 || n == total {
+        1
+    } else {
+        let r = min(n, total - n);
+        if r== 1 {
+            total
+        }else {
+            a(total, r) / a(r, r)
         }
-        return x;
     }
-    1
 }
 
 fn a(n: usize, m: usize) -> usize {
@@ -38,18 +35,19 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_c() {
-        assert_eq!(1, c(0));
-        assert_eq!(1, c(1));
-        assert_eq!(720, c(6));
-    }
-
-    #[test]
-    fn test_a_c() {
-        assert_eq!(c(6) / c(5) / c(6 - 5), a(6, 5) / c(5));
-        assert_eq!(c(6) / c(5) / c(6 - 5), combos(6, 5));
+    fn test_combos() {
         assert_eq!(3, combos(3, 1));
         assert_eq!(3, combos(3, 2));
         assert_eq!(1, combos(3, 3));
+        assert_eq!(4, combos(4, 1));
+        assert_eq!(6, combos(4, 2));
+        assert_eq!(4, combos(4, 3));
+        assert_eq!(1, combos(4, 4));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_combos_panic(){
+        combos(3, 4);
     }
 }
