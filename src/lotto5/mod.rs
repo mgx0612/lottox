@@ -4,6 +4,7 @@ pub mod prize;
 pub mod star5_multi;
 pub mod star5_straight_combo;
 pub mod star5_group_120;
+pub mod star5_group_60;
 
 pub fn check_list(list: &[u8]) -> bool {
     check_list_min_max(list, 1, 10)
