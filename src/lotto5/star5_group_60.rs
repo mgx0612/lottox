@@ -1,4 +1,5 @@
 use common::sum::{combos, Sum};
+use super::check_list_min_max;
 
 pub struct Star5Group60 {
     dup2_list: Vec<u8>,
@@ -25,7 +26,17 @@ fn count_same(v1: &[u8], v2: &[u8]) -> usize {
 }
 
 impl Star5Group60 {
-    pub fn init(_lists: Vec<Vec<u8>>) -> Option<Star5Group60> {
+    pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5Group60> {
+        if lists.len() == 2 {
+            let ref dup2_list = lists[0];
+            let ref nodup_list = lists[1];
+            if check_list_min_max(dup2_list, 1, 10) && check_list_min_max(nodup_list, 3, 10) {
+                return Some(Star5Group60 {
+                    nodup_list: nodup_list.clone(),
+                    dup2_list: dup2_list.clone(),
+                });
+            }
+        }
         None
     }
 }
@@ -43,32 +54,20 @@ mod tests {
 
     #[test]
     fn test_sum() {
-        let b = Star5Group60 {
-            dup2_list: vec![0, 1, 2, 3, 4, 5, 6],
-            nodup_list: vec![0, 1, 2, 3, 4, 5, 6],
-        };
-        let r = b.sum();
+        let b = Star5Group60::init(vec![vec![0, 1, 2, 3, 4, 5, 6], vec![0, 1, 2, 3, 4, 5, 6]]);
+        let r = b.unwrap().sum();
         assert_eq!(r, 140);
 
-        let b = Star5Group60 {
-            dup2_list: vec![0],
-            nodup_list: vec![0, 1, 2, 3, 4, 5, 6],
-        };
-        let r = b.sum();
+        let b = Star5Group60::init(vec![vec![0], vec![0, 1, 2, 3, 4, 5, 6]]);
+        let r = b.unwrap().sum();
         assert_eq!(r, 20);
 
-        let b = Star5Group60 {
-            dup2_list: vec![7],
-            nodup_list: vec![0, 1, 2, 3, 4, 5, 6],
-        };
-        let r = b.sum();
+        let b = Star5Group60::init(vec![vec![7], vec![0, 1, 2, 3, 4, 5, 6]]);
+        let r = b.unwrap().sum();
         assert_eq!(r, 35);
 
-        let b = Star5Group60 {
-            dup2_list: vec![7, 8, 9],
-            nodup_list: vec![0, 1, 2, 3, 4, 5, 6],
-        };
-        let r = b.sum();
+        let b = Star5Group60::init(vec![vec![7, 8, 9], vec![0, 1, 2, 3, 4, 5, 6]]);
+        let r = b.unwrap().sum();
         assert_eq!(r, 105);
     }
 }
