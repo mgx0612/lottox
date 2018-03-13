@@ -4,11 +4,12 @@ use super::check_list_min_max;
 
 pub struct Star5Group60 {
     lists: Vec<Vec<u8>>,
+    total: usize,
 }
 
 impl Sum for Star5Group60 {
     fn sum(&self) -> usize {
-        sum2(self.combos_list(), self.ones_list(), 3)
+        self.total
     }
 }
 
@@ -17,7 +18,10 @@ impl Star5Group60 {
         if lists.len() == 2 && check_list_min_max(&lists[0], 1, 10)
             && check_list_min_max(&lists[1], 3, 10)
         {
-            return Some(Star5Group60 { lists });
+            let total = sum2(&lists[1], &lists[0], 3);
+            if total > 0 {
+                return Some(Star5Group60 { lists, total });
+            }
         }
         None
     }
@@ -61,7 +65,6 @@ mod tests {
         assert_eq!(r, 105);
 
         let b = Star5Group60::init(vec![vec![7, 8, 9], vec![7, 8, 9]]);
-        let r = b.unwrap().sum();
-        assert_eq!(r, 0);
+        assert!(b.is_none());
     }
 }
