@@ -8,18 +8,29 @@ pub fn sum1<T>(ls: &Vec<Vec<T>>) -> usize {
     ls.iter().fold(1, |a, l| a * l.len())
 }
 
+fn count_same<T: Eq>(v1: &[T], v2: &[T]) -> usize {
+    v1.iter().filter(|x| v2.contains(x)).count()
+}
+
+pub fn sum2<T: Eq>(combos_list: &[T], ones_list: &[T], n: usize) -> usize {
+    let lc = combos_list.len();
+    let l1 = ones_list.len();
+    let ls = count_same(combos_list, ones_list);
+    (l1 - ls) * combos(lc, n) + ls * combos(lc - 1, n)
+}
+
 pub fn combos(total: usize, n: usize) -> usize {
-    assert!(total >= n);
-    if n == 0 || n == total {
-        1
-    } else {
-        let r = min(n, total - n);
-        if r== 1 {
-            total
-        }else {
-            a(total, r) / a(r, r)
-        }
+    if total < n {
+        return 0;
     }
+    if n == 0 || n == total {
+        return 1;
+    }
+    let r = min(n, total - n);
+    if r == 1 {
+        return total;
+    }
+    a(total, r) / a(r, r)
 }
 
 fn a(n: usize, m: usize) -> usize {
@@ -35,6 +46,13 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_count_same() {
+        let ref v1 = vec![1, 2, 3, 4];
+        let ref v2 = vec![3, 4, 5, 6];
+        assert_eq!(2, count_same(v1, v2));
+    }
+
+    #[test]
     fn test_combos() {
         assert_eq!(3, combos(3, 1));
         assert_eq!(3, combos(3, 2));
@@ -46,8 +64,8 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
-    fn test_combos_panic(){
-        combos(3, 4);
+    fn test_combos_zero() {
+        let r = combos(3, 4);
+        assert_eq!(r, 0);
     }
 }
