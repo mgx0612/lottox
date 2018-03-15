@@ -5,7 +5,12 @@ pub fn u8_to_bits(v: u8) -> i32 {
 
 #[inline]
 pub fn u8array_to_bits(arr: &[u8]) -> i32 {
-    arr.iter().fold(0, |acc, &e| acc + u8_to_bits(e))
+    u8iter_to_bits(arr.iter())
+}
+
+#[inline]
+pub fn u8iter_to_bits<'a, T: Iterator<Item = &'a u8>>(iter: T) -> i32 {
+    iter.fold(0, |acc, &e| acc + u8_to_bits(e))
 }
 
 #[inline]
