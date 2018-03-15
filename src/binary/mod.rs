@@ -68,9 +68,16 @@ mod tests {
     }
 
     #[test]
-    fn test_alg(){
-        let b1 = u8array_to_bits(&vec![2,2]);
+    fn test_alg() {
+        let b1 = u8array_to_bits(&vec![2, 2]);
         let b2 = u8array_to_bits(&vec![3]);
         assert_eq!(false, b1 == b2);
+
+        let b2 = u8array_to_bits(&vec![2, 2, 2, 2, 2]);
+        assert!(b1 == b2);
+
+        let b1 = u8array_to_bits(&vec![2, 2, 3, 4, 4, 5]);
+        let b2 = u8array_to_bits(&vec![2, 3, 3, 4, 5, 5]);
+        assert!(b1 == b2);
     }
 }
