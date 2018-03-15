@@ -1,9 +1,5 @@
 use common::sum::{Sum, sum1};
-use common::bingo::{Bingo, Prize};
-use super::check_list;
-use binary::{is_allbit_in, u8_to_bits, u8array_to_bits};
-use super::prize::PrizeStar5;
-
+use lotto5;
 
 pub struct Lotto5Star5Multi {
     lists: Vec<Vec<u8>>,
@@ -15,34 +11,16 @@ impl Sum for Lotto5Star5Multi {
     }
 }
 
-impl Bingo for Lotto5Star5Multi {
-    fn bingo(&self, result: &[u8]) -> Option<Box<Prize>> {
-        if self.lists
-            .iter()
-            .zip(result.iter())
-            .all(|(l, r)| l.contains(r))
-        {
-            return Some(Box::new(PrizeStar5));
-        }
-        None
-    }
-}
-
 impl Lotto5Star5Multi {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star5Multi> {
-        if lists.len() == 5 && lists.iter().all(|l| check_list(l)) {
+        if super::check_straight(&lists, 5) {
             return Some(Lotto5Star5Multi { lists });
         }
         None
     }
 
     pub fn bin2go(&self, result: &[u8]) -> bool {
-        if result.len() == self.lists.len() {
-            let rbits = result.iter().map(|&r| u8_to_bits(r));
-            let lbits = self.lists.iter().map(|l| u8array_to_bits(l));
-            return is_allbit_in(rbits, lbits);
-        }
-        false
+        lotto5::bin2go(&self.lists, result)
     }
 }
 

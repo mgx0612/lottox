@@ -1,6 +1,5 @@
 use common::sum::{Sum, sum2};
 use super::check_list_min_max;
-//use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use common::result::pick2bin;
 use binary;

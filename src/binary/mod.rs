@@ -14,11 +14,6 @@ pub fn u8iter_to_bits<'a, T: Iterator<Item = &'a u8>>(iter: T) -> i32 {
 }
 
 #[inline]
-fn is_bit_in(bit: i32, bits: i32) -> bool {
-    (bit & bits) == bit
-}
-
-#[inline]
 pub fn is_allbit_in<A, B>(bitv: A, bitsv: B) -> bool
 where
     A: DoubleEndedIterator<Item = i32> + ExactSizeIterator,
@@ -33,7 +28,7 @@ where
     A: DoubleEndedIterator<Item = i32> + ExactSizeIterator,
     B: DoubleEndedIterator<Item = i32> + ExactSizeIterator,
 {
-    bitv.zip(bitsv).map(|(bit, bits)| is_bit_in(bit, bits))
+    bitv.zip(bitsv).map(|(bit, bits)| bit & bits == bit)
 }
 
 #[cfg(test)]

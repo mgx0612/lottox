@@ -1,5 +1,4 @@
 use common::sum::Sum;
-use super::check_list;
 use binary::{match_allbit, u8_to_bits, u8array_to_bits};
 
 pub struct Lotto5StraightCombo {
@@ -21,7 +20,7 @@ impl Sum for Lotto5StraightCombo {
 
 impl Lotto5StraightCombo {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5StraightCombo> {
-        if lists.len() == 5 && lists.iter().all(|l| check_list(l)) {
+        if  super::check_straight(&lists, 5) {
             return Some(Lotto5StraightCombo { lists });
         }
         None
