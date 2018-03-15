@@ -1,4 +1,5 @@
-use common::check::list_to_set;
+use std::collections::HashSet;
+use std::hash::Hash;
 
 pub mod prize;
 pub mod star5_group_120;
@@ -11,9 +12,27 @@ pub fn check_list(list: &[u8]) -> bool {
     check_list_min_max(list, 1, 10)
 }
 
-pub fn check_list_min_max(list: &[u8], min: usize, max: usize) -> bool {
+#[inline]
+pub fn check_dup_ok<T: Eq + Hash>(list: &[T]) -> bool {
+    let mut s = HashSet::<&T>::new();
+    for i in list {
+        if s.contains(&i) {
+            return false;
+        } else {
+            s.insert(i);
+        }
+    }
+    true
+}
+
+#[inline]
+pub fn check_range_ok(list: &[u8], min: u8, max: u8) -> bool {
+    list.iter().all(|&n| n >= min && n <= max)
+}
+
+pub fn check_list_min_max(list: &[u8], min_len: usize, max_len: usize) -> bool {
     let len = list.len();
-    len >= min && len <= max && len == list_to_set(list).len() && list.iter().all(|&n| n < 10)
+    len >= min_len && len <= max_len && check_dup_ok(list) && check_range_ok(list, 0, 9)
 }
 
 pub mod straight {
@@ -61,7 +80,7 @@ pub mod straight {
 
 #[cfg(test)]
 mod tests {
-    use super::check_list;
+    use super::*;
 
     #[test]
     fn test_check_list() {
@@ -79,5 +98,26 @@ mod tests {
 
         let s = check_list(&vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
         assert_eq!(s, true);
+    }
+
+    #[test]
+    fn test_check_dup() {
+        let ref l = vec![1, 2, 3, 4];
+        assert_eq!(true, check_dup_ok(l));
+
+        let ref l = vec![1, 2, 2, 4];
+        assert_eq!(false, check_dup_ok(l));
+
+        let ref l = vec![vec![1, 2, 2, 4], vec![1, 2, 2, 4]];
+        assert_eq!(false, check_dup_ok(l));
+
+        let ref l = vec![vec![1, 2, 2, 4], vec![1, 2, 3, 4]];
+        assert_eq!(true, check_dup_ok(l));
+
+        let ref l = vec![vec![1, 2, 2, 4], vec![2, 2, 1, 4]];
+        assert_eq!(true, check_dup_ok(l));
+
+        let ref l = vec![vec![4], vec![2], vec![4]];
+        assert_eq!(false, check_dup_ok(l));
     }
 }

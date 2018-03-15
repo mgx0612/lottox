@@ -1,6 +1,7 @@
 use std::collections::HashSet;
+use std::hash::Hash;
 
-pub fn list_to_set(list:&[u8])->HashSet<u8> {
+pub fn list_to_set<T: Eq + Hash + Clone>(list: &[T]) -> HashSet<T> {
     list.iter().cloned().collect()
 }
 
@@ -10,13 +11,13 @@ mod tests {
 
     #[test]
     fn test_list_to_set() {
-        let s=list_to_set(&vec![2,2,4]);
+        let s = list_to_set(&vec![2, 2, 4]);
         assert_eq!(2, s.len());
 
-        let s=list_to_set(&vec![2,3,4]);
+        let s = list_to_set(&vec![2, 3, 4]);
         assert_eq!(3, s.len());
 
-        let s=list_to_set(&vec![2,2,2]);
+        let s = list_to_set(&vec![2, 2, 2]);
         assert_eq!(1, s.len());
     }
 }
