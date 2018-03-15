@@ -5,3 +5,4 @@ authors = ["mgx <marcusgx0612@gmail.com>"]
 
 [dependencies]
 itertools = "0.7.7"
+maplit ="1.0.1"

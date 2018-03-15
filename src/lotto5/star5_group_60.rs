@@ -33,13 +33,10 @@ impl Star5Group60 {
     pub fn ones_list(&self) -> &[u8] {
         &self.lists[0]
     }
-    /*
-    pub fn bin2go(&self, result:&[u8])->bool {
-        let r = result.iter().group_by(|e|*e);
-        println!("{:?}",r);
+
+    pub fn bin2go(&self, _result: &[u8]) -> bool {
         false
     }
-    */
 }
 
 #[cfg(test)]
