@@ -1,6 +1,8 @@
 use common::sum::{combos, Sum};
 use super::check_list_min_max;
 use binary::u8array_to_bits;
+use std::collections::{HashMap, HashSet};
+use common::result::pick2bin;
 
 pub struct Star5Group120 {
     list: Vec<u8>,
@@ -21,26 +23,38 @@ impl Star5Group120 {
         None
     }
 
-    pub fn bin2go(&self, result: &[u8]) -> bool {
-        let r = u8array_to_bits(&self.list);
-        let r2 = u8array_to_bits(result);
-        r & r2 == r2
+    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
+        if let Some(b1) = pick2bin(m, 1, 5) {
+            let r = u8array_to_bits(&self.list);
+            return r & b1 == b1;
+        }
+        false
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use common::result::group_by_count;
 
     #[test]
     fn test_sum() {
         let b = Star5Group120 {
             list: vec![1, 2, 3, 5, 6, 7, 8],
         };
-        let r = b.sum();
-        assert_eq!(r, 21);
-
-        let r = b.bin2go(&vec![8, 7, 5, 1, 2]);
+        assert_eq!(b.sum(), 21);
+        let m = group_by_count(&vec![8, 7, 5, 1, 2]);
+        let r = b.bin2go(&m);
         assert!(r);
+    }
+
+    #[test]
+    fn test_bingo() {
+        let b = Star5Group120 {
+            list: vec![1, 5, 6, 7, 8],
+        };
+        let ref m = group_by_count(&vec![8, 8, 8, 1, 5]);
+        let r = b.bin2go(m);
+        assert_eq!(r,false);
     }
 }

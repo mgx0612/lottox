@@ -10,7 +10,7 @@ pub fn u8array_to_bits(arr: &[u8]) -> i32 {
 
 #[inline]
 pub fn u8iter_to_bits<'a, T: Iterator<Item = &'a u8>>(iter: T) -> i32 {
-    iter.fold(0, |acc, &e| acc + u8_to_bits(e))
+    iter.fold(0, |acc, &e| acc | u8_to_bits(e))
 }
 
 #[inline]
@@ -65,5 +65,12 @@ mod tests {
             v1.iter().map(|&r| u8_to_bits(r)),
             v2.iter().map(|l| u8array_to_bits(l))
         ));
+    }
+
+    #[test]
+    fn test_alg(){
+        let b1 = u8array_to_bits(&vec![2,2]);
+        let b2 = u8array_to_bits(&vec![3]);
+        assert_eq!(false, b1 == b2);
     }
 }
