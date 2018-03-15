@@ -1,5 +1,5 @@
 use common::sum::Sum;
-use binary::{match_allbit, u8_to_bits, u8array_to_bits};
+use lotto5;
 
 pub struct Lotto5StraightCombo {
     lists: Vec<Vec<u8>>,
@@ -7,32 +7,20 @@ pub struct Lotto5StraightCombo {
 
 impl Sum for Lotto5StraightCombo {
     fn sum(&self) -> usize {
-        self.lists
-            .iter()
-            .rev()
-            .scan(1usize, |acc, e| {
-                *acc = *acc * e.len();
-                Some(*acc)
-            })
-            .fold(0usize, |acc, e| acc + e)
+       lotto5::straight::combo::sum(&self.lists)
     }
 }
 
 impl Lotto5StraightCombo {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5StraightCombo> {
-        if  super::check_straight(&lists, 5) {
+        if  lotto5::straight::check(&lists, 5) {
             return Some(Lotto5StraightCombo { lists });
         }
         None
     }
 
     pub fn bin2go(&self, result: &[u8]) -> usize {
-        if result.len() == self.lists.len() {
-            let rbits = result.iter().map(|&r| u8_to_bits(r));
-            let lbits = self.lists.iter().map(|l| u8array_to_bits(l));
-            return match_allbit(rbits, lbits).rev().take_while(|&x| x).count();
-        }
-        0
+        lotto5::straight::combo::bin2go(&self.lists, result)
     }
 }
 
