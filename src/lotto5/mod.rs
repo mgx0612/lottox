@@ -51,6 +51,25 @@ pub mod straight {
         false
     }
 
+    pub mod single {
+        use std::collections::HashSet;
+        use lotto5;
+
+        pub fn check(lists: &Vec<Vec<u8>>, max_lists_len: usize, list_len: usize) -> bool {
+            if lists.len() > max_lists_len {
+                return false;
+            }
+            let mut s = HashSet::<&Vec<u8>>::new();
+            for l in lists {
+                if l.len() != list_len || !lotto5::check_range_ok(l, 0, 9) || s.contains(l) {
+                    return false;
+                }
+                s.insert(l);
+            }
+            true
+        }
+    }
+
     pub mod combo {
         use binary;
         pub fn bin2go(lists: &Vec<Vec<u8>>, result: &[u8]) -> usize {

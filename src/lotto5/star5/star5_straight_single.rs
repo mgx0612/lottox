@@ -14,20 +14,14 @@ impl Sum for Lotto5Star5StraightSingle {
 
 impl Lotto5Star5StraightSingle {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star5StraightSingle> {
-        let check = {
-            let c0 = || lists.len() <= MAX_SINGLES;
-            let c1 = || {
-                lists
-                    .iter()
-                    .all(|l| l.len() == 5 && lotto5::check_range_ok(l, 0, 9))
-            };
-            let c2 = || lotto5::check_dup_ok(&lists);
-            c0() && c1() && c2()
-        };
-        if check {
+        if lotto5::straight::single::check(&lists, MAX_SINGLES, 5) {
             return Some(Lotto5Star5StraightSingle { lists });
         }
         None
+    }
+
+    pub fn bingo(&self, result: &[u8]) -> bool {
+        self.lists.iter().any(|l| *l == result)
     }
 }
 
@@ -42,5 +36,12 @@ mod tests {
 
         let r = Lotto5Star5StraightSingle::init(vec![vec![1, 2, 3, 4, 5], vec![1, 2, 4, 3, 5]]);
         assert!(r.is_some());
+    }
+
+    #[test]
+    fn test_bingo() {
+        let r = Lotto5Star5StraightSingle::init(vec![vec![1, 2, 3, 4, 5], vec![1, 2, 4, 3, 5]]);
+        let r = r.unwrap().bingo(&[1, 2, 3, 4, 5]);
+        assert!(r);
     }
 }
