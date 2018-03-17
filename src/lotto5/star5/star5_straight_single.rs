@@ -14,10 +14,14 @@ impl Sum for Lotto5Star5StraightSingle {
 
 impl Lotto5Star5StraightSingle {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star5StraightSingle> {
-        if lotto5::straight::single::check(&lists, MAX_SINGLES, 5) {
+        if Self::check(&lists){
             return Some(Lotto5Star5StraightSingle { lists });
         }
         None
+    }
+
+    pub fn check(lists:&Vec<Vec<u8>>)->bool {
+        lotto5::straight::single::check(&lists, MAX_SINGLES, 5) 
     }
 
     pub fn bingo(&self, result: &[u8]) -> bool {

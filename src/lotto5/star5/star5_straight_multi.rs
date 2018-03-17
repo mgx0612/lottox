@@ -13,10 +13,14 @@ impl Sum for Lotto5Star5StraightMulti {
 
 impl Lotto5Star5StraightMulti {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star5StraightMulti> {
-        if lotto5::straight::check(&lists, 5) {
+        if Self::check(&lists) {
             return Some(Lotto5Star5StraightMulti { lists });
         }
         None
+    }
+    
+    pub fn check(lists:&Vec<Vec<u8>>)->bool {
+        lotto5::straight::check(&lists, 5)
     }
 
     pub fn bin2go(&self, result: &[u8]) -> bool {

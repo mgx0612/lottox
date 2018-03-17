@@ -7,16 +7,20 @@ pub struct Lotto5StraightCombo {
 
 impl Sum for Lotto5StraightCombo {
     fn sum(&self) -> usize {
-       lotto5::straight::combo::sum(&self.lists)
+        lotto5::straight::combo::sum(&self.lists)
     }
 }
 
 impl Lotto5StraightCombo {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5StraightCombo> {
-        if  lotto5::straight::check(&lists, 5) {
+        if Self::check(&lists) {
             return Some(Lotto5StraightCombo { lists });
         }
         None
+    }
+
+    pub fn check(lists: &Vec<Vec<u8>>) -> bool {
+        lotto5::straight::check(&lists, 5)
     }
 
     pub fn bin2go(&self, result: &[u8]) -> usize {

@@ -2,9 +2,6 @@ use std::collections::HashSet;
 use std::hash::Hash;
 
 pub mod prize;
-pub mod star5_group_120;
-pub mod star5_group_60;
-
 pub mod star5;
 pub mod star4;
 

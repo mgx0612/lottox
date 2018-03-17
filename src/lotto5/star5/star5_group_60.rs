@@ -1,5 +1,5 @@
 use common::sum::{Sum, sum2};
-use super::check_list_min_max;
+use lotto5::check_list_min_max;
 use std::collections::{HashMap, HashSet};
 use common::result::pick2bin;
 use binary;
@@ -17,15 +17,18 @@ impl Sum for Star5Group60 {
 
 impl Star5Group60 {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5Group60> {
-        if lists.len() == 2 && check_list_min_max(&lists[0], 1, 10)
-            && check_list_min_max(&lists[1], 3, 10)
-        {
+        if Self::check(&lists) {
             let total = sum2(&lists[1], &lists[0], 3);
             if total > 0 {
                 return Some(Star5Group60 { lists, total });
             }
         }
         None
+    }
+
+    pub fn check(lists: &Vec<Vec<u8>>) -> bool {
+        lists.len() == 2 && check_list_min_max(&lists[0], 1, 10)
+            && check_list_min_max(&lists[1], 3, 10)
     }
 
     pub fn uni_list(&self) -> &[u8] {
@@ -95,7 +98,7 @@ mod tests {
         assert_eq!(false, b.unwrap().bin2go(m));
     }
 
-     #[test]
+    #[test]
     fn test_bin2go_3() {
         //result is ok, but selection no luck
         let ref result = [2, 2, 3, 4, 5];

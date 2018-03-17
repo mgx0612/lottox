@@ -13,10 +13,14 @@ impl Sum for Lotto5Star4StraightMulti {
 
 impl Lotto5Star4StraightMulti {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star4StraightMulti> {
-        if lotto5::straight::check(&lists, 4) {
+        if Self::check(&lists) {
             return Some(Lotto5Star4StraightMulti { lists });
         }
         None
+    }
+
+    pub fn check(lists: &Vec<Vec<u8>>) -> bool {
+        lotto5::straight::check(&lists, 4)
     }
 
     pub fn bin2go(&self, result: &[u8]) -> bool {
@@ -29,9 +33,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_lotto5_star4_straight_multi(){
-        let b=Lotto5Star4StraightMulti::init(vec![vec![1,2,3],vec![3,4,5],vec![5,6,7],vec![7,8,9]]);
-        let r = b.unwrap().bin2go(&vec![2,5,6,8]);
+    fn test_lotto5_star4_straight_multi() {
+        let b = Lotto5Star4StraightMulti::init(vec![
+            vec![1, 2, 3],
+            vec![3, 4, 5],
+            vec![5, 6, 7],
+            vec![7, 8, 9],
+        ]);
+        let r = b.unwrap().bin2go(&vec![2, 5, 6, 8]);
         assert!(r);
     }
 }
