@@ -1,20 +1,20 @@
 use common::sum::{Sum, sum1};
 use lotto5;
 
-pub struct Lotto5Star5StraightMulti {
+pub struct Star5StraightMulti {
     lists: Vec<Vec<u8>>,
 }
 
-impl Sum for Lotto5Star5StraightMulti {
+impl Sum for Star5StraightMulti {
     fn sum(&self) -> usize {
         sum1(&self.lists)
     }
 }
 
-impl Lotto5Star5StraightMulti {
-    pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star5StraightMulti> {
+impl Star5StraightMulti {
+    pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5StraightMulti> {
         if Self::check(&lists) {
-            return Some(Lotto5Star5StraightMulti { lists });
+            return Some(Star5StraightMulti { lists });
         }
         None
     }
@@ -34,7 +34,7 @@ mod tests {
 
     #[test]
     fn test_lotto5_star5_straight_multi() {
-        let b = Lotto5Star5StraightMulti::init(vec![
+        let b = Star5StraightMulti::init(vec![
             vec![1, 2, 3],
             vec![3, 4, 5],
             vec![5, 6, 7],
