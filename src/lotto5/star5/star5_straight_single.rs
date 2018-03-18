@@ -1,7 +1,6 @@
 use common::sum::Sum;
 use lotto5;
 
-const MAX_SINGLES: usize = 5;
 pub struct Lotto5Star5StraightSingle {
     lists: Vec<Vec<u8>>,
 }
@@ -21,7 +20,7 @@ impl Lotto5Star5StraightSingle {
     }
 
     pub fn check(lists:&Vec<Vec<u8>>)->bool {
-        lotto5::straight::single::check(&lists, MAX_SINGLES, 5) 
+        lotto5::straight::single::check(&lists, lotto5::MAX_SINGLES, 5) 
     }
 
     pub fn bingo(&self, result: &[u8]) -> bool {
