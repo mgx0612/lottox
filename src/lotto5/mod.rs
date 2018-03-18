@@ -5,6 +5,8 @@ pub mod prize;
 pub mod star5;
 pub mod star4;
 
+pub const MAX_SINGLES: usize = 5;
+
 pub fn check_list(list: &[u8]) -> bool {
     check_list_min_max(list, 1, 10)
 }

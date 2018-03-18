@@ -1,5 +1,7 @@
 #![feature(conservative_impl_trait)]
 #![feature(option_filter)]
+#![feature(inclusive_range_syntax)]
+
 #[macro_use] 
 extern crate maplit;
 

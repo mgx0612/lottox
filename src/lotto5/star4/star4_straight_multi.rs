@@ -24,7 +24,7 @@ impl Lotto5Star4StraightMulti {
     }
 
     pub fn bin2go(&self, result: &[u8]) -> bool {
-        lotto5::straight::bin2go(&self.lists, result)
+        lotto5::straight::bin2go(&self.lists, super::transform(result))
     }
 }
 
@@ -40,7 +40,8 @@ mod tests {
             vec![5, 6, 7],
             vec![7, 8, 9],
         ]);
-        let r = b.unwrap().bin2go(&vec![2, 5, 6, 8]);
+        let ref result = vec![2, 5, 6, 8, 9];
+        let r = b.unwrap().bin2go(result);
         assert!(r);
     }
 }
