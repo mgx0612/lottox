@@ -5,3 +5,4 @@ pub mod star5_group_120;
 pub mod star5_group_60;
 pub mod star5_group_30;
 pub mod star5_group_20;
+pub mod star5_group_10;
