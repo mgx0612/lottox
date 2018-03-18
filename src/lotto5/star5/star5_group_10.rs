@@ -15,7 +15,7 @@ impl Sum for Star5Group10 {
 
 impl Star5Group10 {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5Group10> {
-        if lotto5::group::check(&lists,1,1) {
+        if lotto5::group::check(&lists, 1, 1) {
             let total = sum2(&lists[1], &lists[0], 1);
             if total > 0 {
                 return Some(Star5Group10 { lists, total });
@@ -24,8 +24,8 @@ impl Star5Group10 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {   
-        lotto5::group::bin2go((&self.lists[0],3,1),(&self.lists[1],2,1),m)
+    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
+        lotto5::group::bin2go((&self.lists[0], 3, 1), (&self.lists[1], 2, 1), m)
     }
 }
 
@@ -39,15 +39,15 @@ mod tests {
     fn test_sum() {
         let b = Star5Group10::init(vec![vec![7], vec![7]]);
         assert!(b.is_none());
-        
+
         let b = Star5Group10::init(vec![vec![7], vec![7, 8]]);
         let r = b.unwrap();
-        assert_eq!(r.sum(),1);
-        assert!(!r.bin2go(&group_by_count(&vec![7,8,7,7,7])));
-        assert!(r.bin2go(&group_by_count(&vec![8,8,7,7,7])));
+        assert_eq!(r.sum(), 1);
+        assert!(!r.bin2go(&group_by_count(&vec![7, 8, 7, 7, 7])));
+        assert!(r.bin2go(&group_by_count(&vec![8, 8, 7, 7, 7])));
 
         let b = Star5Group10::init(vec![vec![7, 8], vec![7, 8]]);
-        assert_eq!(b.unwrap().sum(),2);
+        assert_eq!(b.unwrap().sum(), 2);
         let b = Star5Group10::init(vec![vec![7, 8], vec![7, 8, 9]]);
         assert_eq!(4, b.unwrap().sum());
         let b = Star5Group10::init(vec![vec![6, 7, 8], vec![1, 2, 3, 9]]);
