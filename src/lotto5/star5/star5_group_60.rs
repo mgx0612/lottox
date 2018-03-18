@@ -1,8 +1,6 @@
 use common::sum::{Sum, sum2};
-use lotto5::check_list_min_max;
+use lotto5;
 use std::collections::{HashMap, HashSet};
-use common::result::pick2bin;
-use binary;
 
 pub struct Star5Group60 {
     lists: Vec<Vec<u8>>,
@@ -17,7 +15,7 @@ impl Sum for Star5Group60 {
 
 impl Star5Group60 {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5Group60> {
-        if Self::check(&lists) {
+        if lotto5::group::check(&lists, 1, 3) {
             let total = sum2(&lists[1], &lists[0], 3);
             if total > 0 {
                 return Some(Star5Group60 { lists, total });
@@ -26,30 +24,8 @@ impl Star5Group60 {
         None
     }
 
-    pub fn check(lists: &Vec<Vec<u8>>) -> bool {
-        lists.len() == 2 && check_list_min_max(&lists[0], 1, 10)
-            && check_list_min_max(&lists[1], 3, 10)
-    }
-
-    pub fn uni_list(&self) -> &[u8] {
-        &self.lists[1]
-    }
-
-    pub fn dup_list(&self) -> &[u8] {
-        &self.lists[0]
-    }
-
     pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        if let Some(b1) = pick2bin(m, 1, 3) {
-            if let Some(b2) = pick2bin(m, 2, 1) {
-                let rb1 = binary::u8array_to_bits(self.uni_list());
-                if (rb1 & b1) == b1 {
-                    let rb2 = binary::u8array_to_bits(self.dup_list());
-                    return (rb2 & b2) == b2;
-                }
-            }
-        }
-        false
+        lotto5::group::bin2go((&self.lists[0], 2, 1), (&self.lists[1], 1, 3), m)
     }
 }
 

@@ -1,8 +1,6 @@
 use common::sum::{combos, Sum};
-use lotto5::check_list_min_max;
-use binary::u8array_to_bits;
+use lotto5;
 use std::collections::{HashMap, HashSet};
-use common::result::pick2bin;
 
 pub struct Star5Group120 {
     list: Vec<u8>,
@@ -17,22 +15,14 @@ impl Sum for Star5Group120 {
 
 impl Star5Group120 {
     pub fn init(list: Vec<u8>) -> Option<Star5Group120> {
-        if Self::check(&list) {
+        if lotto5::group::list_check(&list, 5) {
             return Some(Star5Group120 { list });
         }
         None
     }
 
-    pub fn check(list: &[u8]) -> bool {
-        check_list_min_max(&list, 5, 10)
-    }
-
     pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        if let Some(b1) = pick2bin(m, 1, 5) {
-            let r = u8array_to_bits(&self.list);
-            return r & b1 == b1;
-        }
-        false
+        lotto5::group::list_bin2go((&self.list, 1, 5), m)
     }
 }
 

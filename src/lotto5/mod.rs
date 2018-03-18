@@ -32,6 +32,39 @@ pub fn check_list_min_max(list: &[u8], min_len: usize, max_len: usize) -> bool {
     len >= min_len && len <= max_len && check_dup_ok(list) && check_range_ok(list, 0, 9)
 }
 
+pub mod group {
+    use common::result::pick2bin;
+    use std::collections::{HashMap, HashSet};
+    use binary::u8array_to_bits;
+
+    pub fn list_check(list: &[u8], min: usize) -> bool {
+        super::check_list_min_max(&list, min, 10)
+    }
+
+    pub fn check(lists: &Vec<Vec<u8>>, min1: usize, min2: usize) -> bool {
+        if lists.len() == 2 {
+            return list_check(&lists[0], min1) && list_check(&lists[1], min2);
+        }
+        false
+    }
+
+    pub fn list_bin2go(list: (&[u8], usize, usize), m: &HashMap<usize, HashSet<u8>>) -> bool {
+        if let Some(b1) = pick2bin(m, list.1, list.2) {
+            let rb1 = u8array_to_bits(list.0);
+            return (rb1 & b1) == b1;
+        }
+        false
+    }
+
+    pub fn bin2go(
+        list1: (&[u8], usize, usize),
+        list2: (&[u8], usize, usize),
+        m: &HashMap<usize, HashSet<u8>>,
+    ) -> bool {
+        list_bin2go(list1, m) && list_bin2go(list2, m)
+    }
+}
+
 pub mod straight {
     use binary;
 
