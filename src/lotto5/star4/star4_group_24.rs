@@ -22,7 +22,7 @@ impl Star4Group24 {
     }
 
     pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::list_bin2go((&self.list, 1, 5), m)
+        lotto5::group::list_bin2go((&self.list, 1, 4), m)
     }
 }
 
@@ -30,24 +30,29 @@ impl Star4Group24 {
 mod tests {
     use super::*;
     use common::result::group_by_count;
+    use common::sum::combos;
 
     #[test]
     fn test_sum() {
-        let b = Star5Group120 {
+        let b = Star4Group24 {
             list: vec![1, 2, 3, 5, 6, 7, 8],
         };
-        assert_eq!(b.sum(), 21);
-        let m = group_by_count(&vec![8, 7, 5, 1, 2]);
+        assert_eq!(b.sum(), combos(7, 4));
+        let m = group_by_count(lotto5::star4::transform(&vec![8, 7, 5, 1, 9]));
+        let r = b.bin2go(&m);
+        assert!(r);
+
+        let m = group_by_count(lotto5::star4::transform(&vec![8, 7, 5, 1, 8]));
         let r = b.bin2go(&m);
         assert!(r);
     }
 
     #[test]
     fn test_bingo() {
-        let b = Star5Group120 {
+        let b = Star4Group24 {
             list: vec![1, 5, 6, 7, 8],
         };
-        let ref m = group_by_count(&vec![8, 8, 8, 1, 5]);
+        let ref m = group_by_count(lotto5::star4::transform(&vec![8, 8, 1, 5, 7]));
         let r = b.bin2go(m);
         assert_eq!(r, false);
     }
