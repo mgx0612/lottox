@@ -4,6 +4,7 @@ use std::hash::Hash;
 pub mod prize;
 pub mod star5;
 pub mod star4;
+pub mod star3;
 
 pub const MAX_SINGLES: usize = 5;
 
