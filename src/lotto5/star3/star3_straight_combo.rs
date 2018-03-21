@@ -1,0 +1,32 @@
+use common::sum::Sum;
+use lotto5;
+
+pub struct Star3StraightCombo {
+    lists: Vec<Vec<u8>>,
+}
+
+impl Sum for Star3StraightCombo {
+    fn sum(&self) -> usize {
+        lotto5::straight::combo::sum(&self.lists)
+    }
+}
+
+impl Star3StraightCombo {
+    pub fn init(lists: Vec<Vec<u8>>) -> Option<Star3StraightCombo> {
+        if Self::check(&lists) {
+            return Some(Star3StraightCombo { lists });
+        }
+        None
+    }
+
+    pub fn check(lists: &Vec<Vec<u8>>) -> bool {
+        lotto5::straight::check(&lists, 3)
+    }
+
+    pub fn bin2go<T>(&self, result: &[u8], transform: T) -> usize
+    where
+        T: Fn(&[u8]) -> &[u8],
+    {
+        lotto5::straight::combo::trans2bin2go(&self.lists, result, transform)
+    }
+}

@@ -27,7 +27,7 @@ impl Star3StraightMulti {
     where
         T: Fn(&[u8]) -> &[u8],
     {
-        lotto5::straight::bin2go(&self.lists, transform(result))
+        lotto5::straight::trans2bin2go(&self.lists, result, transform)
     }
 }
 
