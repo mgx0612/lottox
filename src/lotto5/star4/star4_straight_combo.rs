@@ -1,20 +1,20 @@
 use common::sum::Sum;
 use lotto5;
 
-pub struct Lotto5Star4StraightCombo {
+pub struct Star4StraightCombo {
     lists: Vec<Vec<u8>>,
 }
 
-impl Sum for Lotto5Star4StraightCombo {
+impl Sum for Star4StraightCombo {
     fn sum(&self) -> usize {
         lotto5::straight::combo::sum(&self.lists)
     }
 }
 
-impl Lotto5Star4StraightCombo {
-    pub fn init(lists: Vec<Vec<u8>>) -> Option<Lotto5Star4StraightCombo> {
+impl Star4StraightCombo {
+    pub fn init(lists: Vec<Vec<u8>>) -> Option<Star4StraightCombo> {
         if Self::check(&lists) {
-            return Some(Lotto5Star4StraightCombo { lists });
+            return Some(Star4StraightCombo { lists });
         }
         None
     }
@@ -34,7 +34,7 @@ mod tests {
 
     #[test]
     fn test_sum() {
-        let b = Lotto5Star4StraightCombo {
+        let b = Star4StraightCombo {
             lists: vec![
                 vec![1, 2, 3],
                 vec![3, 4, 5],
@@ -45,7 +45,7 @@ mod tests {
         let r = b.sum();
         assert_eq!(r, 3 + 9 + 27 + 81);
 
-        let b = Lotto5Star4StraightCombo {
+        let b = Star4StraightCombo {
             lists: vec![vec![1], vec![3], vec![5], vec![7]],
         };
         let r = b.sum();
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn test_bin2go() {
-        let b = Lotto5Star4StraightCombo::init(vec![
+        let b = Star4StraightCombo::init(vec![
             vec![1, 2, 3],
             vec![3, 4, 5],
             vec![5, 6, 7],
@@ -63,7 +63,7 @@ mod tests {
         let r = b.unwrap().bin2go(&vec![2, 5, 6, 8]);
         assert_eq!(r, 4);
 
-        let b = Lotto5Star4StraightCombo::init(vec![
+        let b = Star4StraightCombo::init(vec![
             vec![1, 2, 3],
             vec![3, 4, 5],
             vec![5, 6, 7],
@@ -72,7 +72,7 @@ mod tests {
         let r = b.unwrap().bin2go(&vec![4, 5, 6, 8]);
         assert_eq!(r, 3);
 
-        let b = Lotto5Star4StraightCombo::init(vec![
+        let b = Star4StraightCombo::init(vec![
             vec![1, 2, 3],
             vec![3, 4, 5],
             vec![5, 6, 7],
