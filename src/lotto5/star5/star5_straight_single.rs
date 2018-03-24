@@ -3,24 +3,19 @@ use lotto5;
 
 pub struct Star5StraightSingle {
     lists: Vec<Vec<u8>>,
+    total: usize,
 }
 
 impl Sum for Star5StraightSingle {
     fn sum(&self) -> usize {
-        self.lists.len()
+        self.total
     }
 }
 
 impl Star5StraightSingle {
     pub fn init(lists: Vec<Vec<u8>>) -> Option<Star5StraightSingle> {
-        if Self::check(&lists){
-            return Some(Star5StraightSingle { lists });
-        }
-        None
-    }
-
-    pub fn check(lists:&Vec<Vec<u8>>)->bool {
-        lotto5::straight::single::check(&lists, lotto5::MAX_SINGLES, 5) 
+        lotto5::straight::single::check(&lists, lotto5::MAX_SINGLES, 5)
+            .map(|total| Star5StraightSingle { lists, total })
     }
 
     pub fn bingo(&self, result: &[u8]) -> bool {

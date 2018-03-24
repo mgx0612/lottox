@@ -94,18 +94,19 @@ pub mod straight {
         use std::collections::HashSet;
         use lotto5;
 
-        pub fn check(lists: &Vec<Vec<u8>>, max_lists_len: usize, list_len: usize) -> bool {
-            if lists.len() > max_lists_len {
-                return false;
+        pub fn check(lists: &Vec<Vec<u8>>, max_lists_len: usize, list_len: usize) -> Option<usize> {
+            let ll= lists.len();
+            if ll > max_lists_len || ll < 1{
+                return None;
             }
             let mut s = HashSet::<&Vec<u8>>::new();
             for l in lists {
                 if l.len() != list_len || !lotto5::check_range_ok(l, 0, 9) || s.contains(l) {
-                    return false;
+                    return None;
                 }
                 s.insert(l);
             }
-            true
+            Some(ll)
         }
     }
 
