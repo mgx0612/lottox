@@ -30,6 +30,10 @@ impl<'a> Outcome<'a> {
     pub fn group2bingo(&self, list1: (&[u8], usize, usize), list2: (&[u8], usize, usize)) -> bool {
         self.group1bingo(list1) && self.group1bingo(list2)
     }
+
+    pub fn singlebingo(&self, lists:&Vec<Vec<u8>>)->bool {
+        lists.iter().any(|l| *l == self.result)
+    }
 }
 
 #[inline]

@@ -1,4 +1,5 @@
 use common::sum::Sum;
+use common::result::Outcome;
 use lotto5;
 
 pub struct Star4StraightSingle {
@@ -18,8 +19,8 @@ impl Star4StraightSingle {
             .map(|total| Star4StraightSingle { lists, total })
     }
 
-    pub fn bingo(&self, result: &[u8]) -> bool {
-        self.lists.iter().any(|l| *l == super::transform(result))
+    pub fn bingo(&self, result: &Outcome) -> bool {
+        result.singlebingo(&self.lists)
     }
 }
 
@@ -38,8 +39,9 @@ mod tests {
 
     #[test]
     fn test_bingo() {
-        let r = Star4StraightSingle::init(vec![vec![1, 2, 3, 4], vec![1, 2, 4, 3]]);
-        let r = r.unwrap().bingo(&[1, 2, 3, 4, 5]);
+        let b= Star4StraightSingle::init(vec![vec![1, 2, 3, 4], vec![1, 2, 4, 3]]);
+        let result = &[1, 2, 3, 4, 5];
+        let r = b.unwrap().bingo(&Outcome::new(result,lotto5::transform::first4));
         assert!(r);
     }
 }
