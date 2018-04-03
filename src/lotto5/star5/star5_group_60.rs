@@ -1,6 +1,6 @@
 use common::sum::{Sum, sum2};
+use common::result::Outcome;
 use lotto5;
-use std::collections::{HashMap, HashSet};
 
 pub struct Star5Group60 {
     lists: Vec<Vec<u8>>,
@@ -24,16 +24,15 @@ impl Star5Group60 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::bin2go((&self.lists[0], 2, 1), (&self.lists[1], 1, 3), m)
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.group2bingo((&self.lists[0], 2, 1), (&self.lists[1], 1, 3))
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use common::result::group_by_count;
-
+    
     #[test]
     fn test_sum() {
         let b = Star5Group60::init(vec![vec![0, 1, 2, 3, 4, 5, 6], vec![0, 1, 2, 3, 4, 5, 6]]);
@@ -60,7 +59,7 @@ mod tests {
     fn test_bin2go_1() {
         //result is ok, selection is lucky
         let ref result = [2, 2, 3, 4, 5];
-        let ref m = group_by_count(result);
+        let ref m = Outcome::new(result, lotto5::transform::all);
         let b = Star5Group60::init(vec![vec![2, 3, 4], vec![0, 1, 2, 3, 4, 5, 6]]);
         assert!(b.unwrap().bin2go(m));
     }
@@ -69,7 +68,7 @@ mod tests {
     fn test_bin2go_2() {
         //result is not for group_60
         let ref result = [2, 6, 3, 4, 5];
-        let ref m = group_by_count(result);
+        let ref m = Outcome::new(result, lotto5::transform::all);
         let b = Star5Group60::init(vec![vec![2, 3, 4], vec![0, 1, 2, 3, 4, 5, 6]]);
         assert_eq!(false, b.unwrap().bin2go(m));
     }
@@ -78,7 +77,7 @@ mod tests {
     fn test_bin2go_3() {
         //result is ok, but selection no luck
         let ref result = [2, 2, 3, 4, 5];
-        let ref m = group_by_count(result);
+        let ref m = Outcome::new(result, lotto5::transform::all);
         let b = Star5Group60::init(vec![vec![3, 4], vec![0, 1, 2, 3, 4, 5, 6]]);
         assert_eq!(false, b.unwrap().bin2go(m));
     }

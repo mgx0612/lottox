@@ -1,6 +1,6 @@
 use common::sum::{Sum, sum2};
+use common::result::Outcome;
 use lotto5;
-use std::collections::{HashMap, HashSet};
 
 pub struct Star5Group20 {
     lists: Vec<Vec<u8>>,
@@ -24,8 +24,8 @@ impl Star5Group20 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::bin2go((&self.lists[0], 3, 1), (&self.lists[1], 1, 2), m)
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.group2bingo((&self.lists[0], 3, 1), (&self.lists[1], 1, 2))
     }
 }
 

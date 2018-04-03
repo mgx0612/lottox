@@ -53,25 +53,20 @@ fn group<T: Eq + Hash>(m: HashMap<T, usize>) -> HashMap<usize, HashSet<T>> {
     m2
 }
 
-pub fn group_by_count(result: &[u8]) -> HashMap<usize, HashSet<u8>> {
+#[inline]
+fn group_by_count(result: &[u8]) -> HashMap<usize, HashSet<u8>> {
     group(count(result))
 }
 
 #[inline]
-fn pick<T: Eq + Hash>(
-    m: &HashMap<usize, HashSet<T>>,
-    target_size: usize,
-    target_amount: usize,
-) -> Option<&HashSet<T>> {
-    m.get(&target_size).filter(|&s| s.len() == target_amount)
-}
-
-pub fn pick2bin(
+fn pick2bin(
     m: &HashMap<usize, HashSet<u8>>,
     target_size: usize,
     target_amount: usize,
 ) -> Option<i32> {
-    pick(m, target_size, target_amount).map(|s| u8iter_to_bits(s.iter()))
+    m.get(&target_size)
+        .filter(|&s| s.len() == target_amount)
+        .map(|s| u8iter_to_bits(s.iter()))
 }
 
 #[cfg(test)]
