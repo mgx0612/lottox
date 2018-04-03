@@ -1,7 +1,7 @@
-use std::collections::{HashMap, HashSet};
 use common::sum::{Sum, sum2};
 use lotto5;
 use super::ListN;
+use common::result::Outcome;
 
 const LIST0: ListN = ListN { min: 1, freq: 3 };
 const LIST1: ListN = ListN { min: 1, freq: 1 };
@@ -28,11 +28,10 @@ impl Star4Group4 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::bin2go(
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.group2bingo(
             (&self.lists[0], LIST0.freq, LIST0.min),
             (&self.lists[1], LIST1.freq, LIST1.min),
-            m,
         )
     }
 }
@@ -41,8 +40,8 @@ impl Star4Group4 {
 mod tests {
 
     use super::*;
-    use common::result::group_by_count;
-    use lotto5::star4::transform;
+    use common::result::Outcome;
+
 
     #[test]
     fn test_sum() {
@@ -59,33 +58,36 @@ mod tests {
         let b = Star4Group4::init(vec![vec![2], vec![2]]);
         assert!(b.is_none());
     }
+    
+    #[allow(non_upper_case_globals)]
+    const transform: fn(&[u8]) -> &[u8] = lotto5::transform::first4;
 
     #[test]
     fn test_bingo() {
         let b = Star4Group4::init(vec![vec![4, 5], vec![9, 8, 3, 6, 1, 7]]).unwrap();
 
         let ref result = vec![1, 4, 4, 4, 3];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(r);
 
         let ref result = vec![4, 4, 4, 3, 3];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(r);
 
         let ref result = vec![3, 4, 4, 4, 1];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(r);
 
         let ref result = vec![6, 5, 5, 5, 3];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(r);
 
         let ref result = vec![6, 5, 5, 4, 3];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(!r);
 
         let ref result = vec![3, 4, 5, 6, 7];
-        let r = b.bin2go(&group_by_count(transform(result)));
+        let r = b.bin2go(&Outcome::new(&result, transform));
         assert!(!r);
     }
 }

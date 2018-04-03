@@ -1,6 +1,6 @@
 use common::sum::{combos, Sum};
 use lotto5;
-use std::collections::{HashMap, HashSet};
+use common::result::Outcome;
 
 pub struct Star4Group24 {
     list: Vec<u8>,
@@ -21,16 +21,19 @@ impl Star4Group24 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::list_bin2go((&self.list, 1, 4), m)
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.group1bingo((&self.list, 1, 4))
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use common::result::group_by_count;
     use common::sum::combos;
+    use common::result::Outcome;
+
+    #[allow(non_upper_case_globals)]
+    const transform: fn(&[u8]) -> &[u8] = lotto5::transform::first4;
 
     #[test]
     fn test_sum() {
@@ -38,12 +41,12 @@ mod tests {
             list: vec![1, 2, 3, 5, 6, 7, 8],
         };
         assert_eq!(b.sum(), combos(7, 4));
-        let m = group_by_count(lotto5::star4::transform(&vec![8, 7, 5, 1, 9]));
-        let r = b.bin2go(&m);
+        let m = &vec![8, 7, 5, 1, 9];
+        let r = b.bin2go(&Outcome::new(m, transform));
         assert!(r);
 
-        let m = group_by_count(lotto5::star4::transform(&vec![8, 7, 5, 1, 8]));
-        let r = b.bin2go(&m);
+        let m = &vec![8, 7, 5, 1, 8];
+        let r = b.bin2go(&Outcome::new(m, transform));
         assert!(r);
     }
 
@@ -52,8 +55,8 @@ mod tests {
         let b = Star4Group24 {
             list: vec![1, 5, 6, 7, 8],
         };
-        let ref m = group_by_count(lotto5::star4::transform(&vec![8, 8, 1, 5, 7]));
-        let r = b.bin2go(m);
+        let ref m = &vec![8, 8, 1, 5, 7];
+        let r = b.bin2go(&Outcome::new(m, transform));
         assert_eq!(r, false);
     }
 }

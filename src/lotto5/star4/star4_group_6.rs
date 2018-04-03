@@ -1,6 +1,6 @@
 use common::sum::{combos, Sum};
+use common::result::Outcome;
 use lotto5;
-use std::collections::{HashMap, HashSet};
 use super::ListN;
 
 const LIST0: ListN = ListN { min: 2, freq: 2 };
@@ -24,7 +24,7 @@ impl Star4Group6 {
         None
     }
 
-    pub fn bin2go(&self, m: &HashMap<usize, HashSet<u8>>) -> bool {
-        lotto5::group::list_bin2go((&self.list, LIST0.freq, LIST0.min), m)
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.group1bingo((&self.list, LIST0.freq, LIST0.min))
     }
 }
