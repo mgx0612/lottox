@@ -1,4 +1,5 @@
 use common::sum::Sum;
+use common::result::Outcome;
 use lotto5;
 
 pub struct Star4StraightCombo {
@@ -23,8 +24,8 @@ impl Star4StraightCombo {
         lotto5::straight::check(&lists, 4)
     }
 
-    pub fn bin2go(&self, result: &[u8]) -> usize {
-        lotto5::straight::combo::bin2go(&self.lists, super::transform(result))
+    pub fn bin2go(&self, result: &Outcome) -> usize {
+        result.multi_combo_bingo(&self.lists)
     }
 }
 
@@ -35,12 +36,7 @@ mod tests {
     #[test]
     fn test_sum() {
         let b = Star4StraightCombo {
-            lists: vec![
-                vec![1, 2, 3],
-                vec![3, 4, 5],
-                vec![5, 6, 7],
-                vec![7, 8, 9],
-            ],
+            lists: vec![vec![1, 2, 3], vec![3, 4, 5], vec![5, 6, 7], vec![7, 8, 9]],
         };
         let r = b.sum();
         assert_eq!(r, 3 + 9 + 27 + 81);
@@ -60,7 +56,9 @@ mod tests {
             vec![5, 6, 7],
             vec![7, 8, 9],
         ]);
-        let r = b.unwrap().bin2go(&vec![2, 5, 6, 8]);
+        let ref result = vec![2, 5, 6, 8, 9];
+        let ref outcome = Outcome::new(result, lotto5::transform::first4);
+        let r = b.unwrap().bin2go(outcome);
         assert_eq!(r, 4);
 
         let b = Star4StraightCombo::init(vec![
@@ -69,7 +67,9 @@ mod tests {
             vec![5, 6, 7],
             vec![7, 8, 9],
         ]);
-        let r = b.unwrap().bin2go(&vec![4, 5, 6, 8]);
+        let ref result = vec![4, 5, 6, 8, 9];
+        let ref outcome = Outcome::new(result, lotto5::transform::first4);
+        let r = b.unwrap().bin2go(outcome);
         assert_eq!(r, 3);
 
         let b = Star4StraightCombo::init(vec![
@@ -78,7 +78,9 @@ mod tests {
             vec![5, 6, 7],
             vec![7, 8, 9],
         ]);
-        let r = b.unwrap().bin2go(&vec![4, 6, 0, 7]);
+        let ref result = vec![4, 6, 0, 7, 9];
+        let ref outcome = Outcome::new(result, lotto5::transform::first4);
+        let r = b.unwrap().bin2go(outcome);        
         assert_eq!(r, 1);
     }
 }

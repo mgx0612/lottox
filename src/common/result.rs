@@ -1,10 +1,11 @@
 use std::collections::{HashMap, HashSet};
 use std::hash::Hash;
-use binary::{u8array_to_bits, u8iter_to_bits};
+use binary::{u8_to_bits, u8array_to_bits, u8iter_to_bits};
 
 pub struct Outcome<'a> {
-    pub result: &'a [u8],
+    result: &'a [u8],
     group: HashMap<usize, HashSet<u8>>,
+    bin4straight: Vec<i32>,
 }
 
 impl<'a> Outcome<'a> {
@@ -16,6 +17,7 @@ impl<'a> Outcome<'a> {
         Outcome {
             result,
             group: group_by_count(result),
+            bin4straight: result.iter().map(|&r| u8_to_bits(r)).collect(),
         }
     }
 
@@ -31,8 +33,32 @@ impl<'a> Outcome<'a> {
         self.group1bingo(list1) && self.group1bingo(list2)
     }
 
-    pub fn singlebingo(&self, lists:&Vec<Vec<u8>>)->bool {
+    pub fn singlebingo(&self, lists: &Vec<Vec<u8>>) -> bool {
         lists.iter().any(|l| *l == self.result)
+    }
+
+    pub fn multi_combo_bingo(&self, lists: &Vec<Vec<u8>>) -> usize {
+        if self.result.len() == lists.len() {
+            return self.bin4straight
+                .iter()
+                .zip(lists)
+                .map(|(&bit, l)| bit & u8array_to_bits(l) == bit)
+                .rev()
+                .take_while(|&x| x)
+                .count();
+        }
+        0
+    }
+
+    pub fn multi_straight_bingo(&self, lists: &Vec<Vec<u8>>) -> bool {
+        if self.result.len() == lists.len() {
+            return self.bin4straight
+                .iter()
+                .zip(lists)
+                .map(|(&bit, l)| bit & u8array_to_bits(l) == bit)
+                .all(|x| x);
+        }
+        false
     }
 }
 

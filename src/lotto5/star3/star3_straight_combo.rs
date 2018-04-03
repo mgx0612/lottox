@@ -1,4 +1,5 @@
 use common::sum::Sum;
+use common::result::Outcome;
 use lotto5;
 
 pub struct Star3StraightCombo {
@@ -23,10 +24,8 @@ impl Star3StraightCombo {
         lotto5::straight::check(&lists, 3)
     }
 
-    pub fn bin2go<T>(&self, result: &[u8], transform: T) -> usize
-    where
-        T: Fn(&[u8]) -> &[u8],
+    pub fn bin2go<T>(&self, result:&Outcome) -> usize
     {
-        lotto5::straight::combo::trans2bin2go(&self.lists, result, transform)
+        result.multi_combo_bingo(&self.lists)
     }
 }

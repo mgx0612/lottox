@@ -10,7 +10,3 @@ pub struct ListN {
     pub min: usize,
     pub freq: usize,
 }
-
-pub fn transform(result:&[u8])->&[u8]{
-    &result[0..4]
-}

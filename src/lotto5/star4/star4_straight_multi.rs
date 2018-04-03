@@ -1,4 +1,5 @@
 use common::sum::{Sum, sum1};
+use common::result::Outcome;
 use lotto5;
 
 pub struct Star4StraightMulti {
@@ -23,8 +24,8 @@ impl Star4StraightMulti {
         lotto5::straight::check(&lists, 4)
     }
 
-    pub fn bin2go(&self, result: &[u8]) -> bool {
-        lotto5::straight::bin2go(&self.lists, super::transform(result))
+    pub fn bin2go(&self, result: &Outcome) -> bool {
+        result.multi_straight_bingo(&self.lists)
     }
 }
 
@@ -41,7 +42,7 @@ mod tests {
             vec![7, 8, 9],
         ]);
         let ref result = vec![2, 5, 6, 8, 9];
-        let r = b.unwrap().bin2go(result);
+        let r = b.unwrap().bin2go(&Outcome::new(result, lotto5::transform::first4));
         assert!(r);
     }
 }

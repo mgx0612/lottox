@@ -1,4 +1,5 @@
 use common::sum::Sum;
+use common::result::Outcome;
 use lotto5;
 
 pub struct Star5StraightCombo {
@@ -23,8 +24,8 @@ impl Star5StraightCombo {
         lotto5::straight::check(&lists, 5)
     }
 
-    pub fn bin2go(&self, result: &[u8]) -> usize {
-        lotto5::straight::combo::bin2go(&self.lists, result)
+    pub fn bin2go(&self, result: &Outcome) -> usize {
+        result.multi_combo_bingo(&self.lists)
     }
 }
 
@@ -62,7 +63,9 @@ mod tests {
             vec![7, 8, 9],
             vec![0, 2, 4],
         ]);
-        let r = b.unwrap().bin2go(&vec![2, 5, 6, 8, 0]);
+        let result = &vec![2, 5, 6, 8, 0];
+        let r = b.unwrap()
+            .bin2go(&Outcome::new(result, lotto5::transform::all));
         assert_eq!(r, 5);
 
         let b = Star5StraightCombo::init(vec![
@@ -72,7 +75,9 @@ mod tests {
             vec![7, 8, 9],
             vec![0, 2, 4],
         ]);
-        let r = b.unwrap().bin2go(&vec![4, 5, 6, 8, 0]);
+        let result = &vec![4, 5, 6, 8, 0];
+        let r = b.unwrap()
+            .bin2go(&Outcome::new(result, lotto5::transform::all));
         assert_eq!(r, 4);
 
         let b = Star5StraightCombo::init(vec![
@@ -82,7 +87,9 @@ mod tests {
             vec![7, 8, 9],
             vec![0, 2, 4],
         ]);
-        let r = b.unwrap().bin2go(&vec![4, 6, 0, 2, 2]);
+        let result = &vec![4, 6, 0, 2, 2];
+        let r = b.unwrap()
+            .bin2go(&Outcome::new(result, lotto5::transform::all));
         assert_eq!(r, 1);
     }
 }

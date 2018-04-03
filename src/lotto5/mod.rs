@@ -49,26 +49,11 @@ pub mod group {
 }
 
 pub mod straight {
-    use binary;
 
     pub fn check(lists: &Vec<Vec<u8>>, lists_size: usize) -> bool {
         lists.len() == lists_size && lists.iter().all(|l| super::check_list(l))
     }
-    pub fn trans2bin2go<T>(lists: &Vec<Vec<u8>>, result: &[u8], transform: T) -> bool
-    where
-        T: Fn(&[u8]) -> &[u8],
-    {
-        bin2go(lists, transform(result))
-    }
-
-    pub fn bin2go(lists: &Vec<Vec<u8>>, result: &[u8]) -> bool {
-        if result.len() == lists.len() {
-            let rbits = result.iter().map(|&r| binary::u8_to_bits(r));
-            let lbits = lists.iter().map(|l| binary::u8array_to_bits(l));
-            return binary::is_allbit_in(rbits, lbits);
-        }
-        false
-    }
+    
 
     pub mod single {
         use std::collections::HashSet;
@@ -91,26 +76,6 @@ pub mod straight {
     }
 
     pub mod combo {
-        use binary;
-
-        pub fn trans2bin2go<T>(lists: &Vec<Vec<u8>>, result: &[u8], transform: T) -> usize
-        where
-            T: Fn(&[u8]) -> &[u8],
-        {
-            bin2go(lists, transform(result))
-        }
-
-        pub fn bin2go(lists: &Vec<Vec<u8>>, result: &[u8]) -> usize {
-            if result.len() == lists.len() {
-                let rbits = result.iter().map(|&r| binary::u8_to_bits(r));
-                let lbits = lists.iter().map(|l| binary::u8array_to_bits(l));
-                return binary::match_allbit(rbits, lbits)
-                    .rev()
-                    .take_while(|&x| x)
-                    .count();
-            }
-            0
-        }
 
         pub fn sum(lists: &Vec<Vec<u8>>) -> usize {
             lists
