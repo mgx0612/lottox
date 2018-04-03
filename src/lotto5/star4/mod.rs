@@ -12,5 +12,5 @@ pub struct ListN {
 }
 
 pub fn transform(result:&[u8])->&[u8]{
-    &result[0..=3]
+    &result[0..4]
 }

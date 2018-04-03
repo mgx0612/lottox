@@ -1,6 +1,36 @@
 use std::collections::{HashMap, HashSet};
 use std::hash::Hash;
-use binary::u8iter_to_bits;
+use binary::{u8array_to_bits, u8iter_to_bits};
+
+pub struct Outcome<'a> {
+    pub result: &'a [u8],
+    group: HashMap<usize, HashSet<u8>>,
+}
+
+impl<'a> Outcome<'a> {
+    pub fn new<T>(list: &'a [u8], transform: T) -> Self
+    where
+        T: Fn(&[u8]) -> &[u8],
+    {
+        let result = transform(list);
+        Outcome {
+            result,
+            group: group_by_count(result),
+        }
+    }
+
+    pub fn group1bingo(&self, list: (&[u8], usize, usize)) -> bool {
+        if let Some(b1) = pick2bin(&self.group, list.1, list.2) {
+            let rb1 = u8array_to_bits(list.0);
+            return (rb1 & b1) == b1;
+        }
+        false
+    }
+
+    pub fn group2bingo(&self, list1: (&[u8], usize, usize), list2: (&[u8], usize, usize)) -> bool {
+        self.group1bingo(list1) && self.group1bingo(list2)
+    }
+}
 
 #[inline]
 fn count<T>(result: &[T]) -> HashMap<T, usize>

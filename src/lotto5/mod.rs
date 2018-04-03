@@ -95,8 +95,8 @@ pub mod straight {
         use lotto5;
 
         pub fn check(lists: &Vec<Vec<u8>>, max_lists_len: usize, list_len: usize) -> Option<usize> {
-            let ll= lists.len();
-            if ll > max_lists_len || ll < 1{
+            let ll = lists.len();
+            if ll > max_lists_len || ll < 1 {
                 return None;
             }
             let mut s = HashSet::<&Vec<u8>>::new();
@@ -142,6 +142,24 @@ pub mod straight {
                 })
                 .fold(0usize, |acc, e| acc + e)
         }
+    }
+}
+
+pub mod transform {
+    pub fn first4(result: &[u8]) -> &[u8] {
+        &result[0..4]
+    }
+
+    pub fn first3(result: &[u8]) -> &[u8] {
+        &result[0..3]
+    }
+
+    pub fn middle3(result: &[u8]) -> &[u8] {
+        &result[1..4]
+    }
+
+    pub fn last3(result: &[u8]) -> &[u8] {
+        &result[2..5]
     }
 }
 
